@@ -111,25 +111,89 @@ Transaction* OrderBook::getTransactions(int* n){
     return this->transactions->dados; 
 }
 
-bool submit(Order order){
-    
+bool OrderBook::submit(Order order){
+    char type = order.getType(); 
+    int value = 0; 
+    int id = 0;     
+    if(type == 'S'){
+        if (this->buys->tamanho != 0){
+            value = this->buys->dados[0].getPrice();
+            id = this->buys->dados[0].getId();
+            for(int i = 1; i< this->buys->tamanho; i++){
+                if (this->buys->dados[i].getPrice() > value){
+                    value = this->buys->dados[i].getPrice();
+                    id = this->buys->dados[i].getId();
+                }
+            }
+            if (value >= order.getPrice()){
+                append_trans(this->transactions, Transaction(id, order.getId(), value)); 
+                return true; 
+            }
+        }
+        append(this->sells, order);
+        return false;
+    }
+    if (this->sells->tamanho != 0){
+        value = this->sells->dados[0].getPrice();
+        id = this->sells->dados[0].getId();
+        for(int i = 1; i< this->sells->tamanho; i++){
+            if (this->sells->dados[i].getPrice() < value){
+                value = this->sells->dados[i].getPrice();
+                id = this->sells->dados[i].getId();
+            }
+        }
+        if (value <= order.getPrice()){
+            append_trans(this->transactions, Transaction(id, order.getId(), value)); 
+            return true; 
+        }
+    }
+    append(this->buys, order);
+    return false; 
 };
 
-void OrderBook::printBuyOrders(){
-    for(int i =0; i<this->buys->tamanho; i++){
-        cout << "[" << this->buys->dados[i].getId() << "|" << this->buys->dados[i].getPrice() << "|" << this->buys->dados[i].getTimestamp() <<"]" << endl; 
+bool OrderBook::cancel(int id){
+    for (int i = 0; i < this->sells->tamanho; i++){
+        if (this->sells->dados[i].getId() == id){
+            remove(sells, this->sells->dados[i]);
+            return true;
+        }
     }
+    for (int i = 0; i<this->buys->tamanho; i++){
+        if(this->buys->dados[i].getId() == id){
+            remove(buys, this->buys->dados[i]);
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void OrderBook::printBuyOrders(){
+    cout << "Buy Orders : " << endl; 
+    if (this->buys->tamanho == 0){
+        cout << "empty" << endl; 
+    }
+    else{
+    for(int i =0; i<this->buys->tamanho; i++){
+        cout << "[ " << this->buys->dados[i].getId() << " | " << this->buys->dados[i].getPrice() << " | " << this->buys->dados[i].getTimestamp() <<" ] " << endl; 
+    }}
 }
 
 void OrderBook::printSellOrders(){
+    cout << "Sell Orders : " << endl; 
+    if (this->buys->tamanho == 0){
+        cout << "(empty)" << endl;
+    } 
+    else{
     for(int i =0; i<this->sells->tamanho; i++){
-        cout << "[" << this->sells->dados[i].getId() << "|" << this->sells->dados[i].getPrice() << "|" << this->sells->dados[i].getTimestamp() <<"]" << endl; 
-    }
+        cout << "[ " << this->sells->dados[i].getId() << " | " << this->sells->dados[i].getPrice() << " | " << this->sells->dados[i].getTimestamp() <<" ]" << endl; 
+    }}
 }
 
 void OrderBook::printTransactions(){
+    cout << "Transactions : " << endl; 
     for(int i =0; i<this->transactions->tamanho; i++){
-        cout << "[" << this->transactions->dados[i].getBuyOrderId() << "|" << this->transactions->dados[i].getSellOrderId() << "|" << this->transactions->dados[i].getExecutionPrice() <<"]" << endl; 
+        cout << "[  " << this->transactions->dados[i].getBuyOrderId() << " | " << this->transactions->dados[i].getSellOrderId() << " | " << this->transactions->dados[i].getExecutionPrice() <<" ]" << endl; 
     }
 }
 
