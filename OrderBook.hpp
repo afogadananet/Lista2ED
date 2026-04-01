@@ -5,21 +5,35 @@
 #include "Order.hpp"
 #include "Transaction.hpp"
 
-struct ArrayDinamico {
+struct ArrayDinamicoOrders {
     int capacidade;
     int tamanho;
     Order* dados; 
 };
 
-ArrayDinamico* inicializar(int capacidade);
-void deletar(ArrayDinamico* p);
-void remove(ArrayDinamico* p, Order pedido);
-void append(ArrayDinamico* p, Order pedido);
-void resize(ArrayDinamico* p, int nova_capacidade);
+struct ArrayDinamicoTrans {
+    int capacidade;
+    int tamanho;
+    Transaction* dados; 
+};
+
+ArrayDinamicoOrders* inicializar(int capacidade);
+void deletar(ArrayDinamicoOrders* p);
+void remove(ArrayDinamicoOrders* p, Order pedido);
+void append(ArrayDinamicoOrders* p, Order pedido);
+void resize(ArrayDinamicoOrders* p, int nova_capacidade);
+
+ArrayDinamicoTrans* inicializar_trans(int capacidade);
+void deletar_trans(ArrayDinamicoTrans* p);
+void append_trans(ArrayDinamicoTrans* p, Transaction pedido);
+void resize_trans(ArrayDinamicoTrans* p, int nova_capacidade);
+
 
 class OrderBook {
 private:
-
+    ArrayDinamicoOrders* buys; 
+    ArrayDinamicoOrders* sells; 
+    ArrayDinamicoTrans* transactions; 
 
 public:
 
