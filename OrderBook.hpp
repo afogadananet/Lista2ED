@@ -2,15 +2,24 @@
 #define ORDERBOOK_HPP
 #include <iostream>
 
-#include "Order.cpp"
-#include "Transaction.cpp"
+#include "Order.hpp"
+#include "Transaction.hpp"
+
+struct ArrayDinamico {
+    int capacidade;
+    int tamanho;
+    Order* dados; 
+};
+
+ArrayDinamico* inicializar(int capacidade);
+void deletar(ArrayDinamico* p);
+void remove(ArrayDinamico* p, Order pedido);
+void append(ArrayDinamico* p, Order pedido);
+void resize(ArrayDinamico* p, int nova_capacidade);
 
 class OrderBook {
-
 private:
 
-    // Estruturas internas escolhidas pelos alunos
-    // para armazenar ordens de compra, venda e transações
 
 public:
 
