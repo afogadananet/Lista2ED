@@ -80,7 +80,11 @@ void resize_trans(ArrayDinamicoTrans* p, int nova_capacidade) {
     p->capacidade = nova_capacidade;
 }
 
-OrderBook::OrderBook(){}
+OrderBook::OrderBook(){
+    this-> sells = inicializar(1); 
+    this->buys = inicializar(1); 
+    this -> transactions = inicializar_trans(1); 
+}
 
 OrderBook::~OrderBook(){}
 
@@ -115,41 +119,46 @@ bool OrderBook::submit(Order order){
     char type = order.getType(); 
     int value = 0; 
     int id = 0;     
-    if(type == 'S'){
-        if (this->buys->tamanho != 0){
+    if(type == 'S'){ // se for do tipo sell 
+
+        if (this->buys->tamanho != 0){ //se ele tá vazio ele tbm é diferente de zero, pq preencheu com lixo 
             value = this->buys->dados[0].getPrice();
             id = this->buys->dados[0].getId();
-            for(int i = 1; i< this->buys->tamanho; i++){
+
+            for(int i = 1; i< this->buys->tamanho; i++){ 
                 if (this->buys->dados[i].getPrice() > value){
                     value = this->buys->dados[i].getPrice();
-                    id = this->buys->dados[i].getId();
+                    id = this->buys->dados[i].getId();                    
                 }
             }
             if (value >= order.getPrice()){
+                remove(this->buys, order); 
                 append_trans(this->transactions, Transaction(id, order.getId(), value)); 
                 return true; 
-            }
+            } 
         }
         append(this->sells, order);
         return false;
-    }
+    } 
     if (this->sells->tamanho != 0){
         value = this->sells->dados[0].getPrice();
         id = this->sells->dados[0].getId();
         for(int i = 1; i< this->sells->tamanho; i++){
-            if (this->sells->dados[i].getPrice() < value){
+            cout << "for sells" << endl;
+            if (this->sells->dados[i].getPrice() < value){ 
                 value = this->sells->dados[i].getPrice();
                 id = this->sells->dados[i].getId();
             }
         }
         if (value <= order.getPrice()){
+            remove(this->sells, order); 
             append_trans(this->transactions, Transaction(id, order.getId(), value)); 
             return true; 
         }
     }
     append(this->buys, order);
     return false; 
-};
+}
 
 bool OrderBook::cancel(int id){
     for (int i = 0; i < this->sells->tamanho; i++){
@@ -169,9 +178,9 @@ bool OrderBook::cancel(int id){
 
 
 void OrderBook::printBuyOrders(){
-    cout << "Buy Orders : " << endl; 
+    cout << "Buy Orders: " << endl; 
     if (this->buys->tamanho == 0){
-        cout << "empty" << endl; 
+        cout << "(empty)" << endl; 
     }
     else{
     for(int i =0; i<this->buys->tamanho; i++){
@@ -180,8 +189,8 @@ void OrderBook::printBuyOrders(){
 }
 
 void OrderBook::printSellOrders(){
-    cout << "Sell Orders : " << endl; 
-    if (this->buys->tamanho == 0){
+    cout << "Sell Orders: " << endl; 
+    if (this->sells->tamanho == 0){
         cout << "(empty)" << endl;
     } 
     else{
@@ -191,9 +200,14 @@ void OrderBook::printSellOrders(){
 }
 
 void OrderBook::printTransactions(){
-    cout << "Transactions : " << endl; 
-    for(int i =0; i<this->transactions->tamanho; i++){
-        cout << "[  " << this->transactions->dados[i].getBuyOrderId() << " | " << this->transactions->dados[i].getSellOrderId() << " | " << this->transactions->dados[i].getExecutionPrice() <<" ]" << endl; 
-    }
+    cout << "Transactions: " << endl; 
+    
+    if (this->transactions->tamanho == 0){ // TAMANHO ESTÁ SENDO INICIALIZANDO COMO 1?? 
+        cout << "(empty)" << endl;
+    } 
+    else{
+    for(int i = 0; i<this->transactions->tamanho; i++){
+        cout << "[ " << this->transactions->dados[i].getBuyOrderId() <<" | " << this->transactions->dados[i].getSellOrderId() <<  " | "  << this->transactions->dados[i].getExecutionPrice() <<" ]" << endl; 
+    }}
 }
 

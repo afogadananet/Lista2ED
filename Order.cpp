@@ -2,6 +2,8 @@
 using namespace std;
 #include "Order.hpp" 
 
+Order::Order(){}
+
 Order::Order(int id, char type, float price, int timestamp){
     this-> id = id; 
     this -> type = type;
