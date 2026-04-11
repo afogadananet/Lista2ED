@@ -117,51 +117,39 @@ Transaction* OrderBook::getTransactions(int* n){
 
 bool OrderBook::submit(Order order){
     char type = order.getType(); 
-    int value = 0; 
-    int id = 0;     
+    Order order2;    
     if(type == 'S'){ // se for do tipo sell 
 
         if (this->buys->tamanho != 0){ 
-            value = this->buys->dados[0].getPrice();
-            id = this->buys->dados[0].getId();
+            order2 = this->buys->dados[0]; 
 
             for(int i = 1; i< this->buys->tamanho; i++){ 
-                if (this->buys->dados[i].getPrice() > value){
-                    value = this->buys->dados[i].getPrice();
-                    id = this->buys->dados[i].getId();                    
+                if (this->buys->dados[i].getPrice() > order2.getPrice()){
+                    order2 = this->buys->dados[i];          
                 }
             }
-            if (value >= order.getPrice()){
-                remove(this->buys, order); 
-                append_trans(this->transactions, Transaction(id, order.getId(), value)); 
+            if (order2.getPrice() >= order.getPrice()){
+                remove(this->buys, order2); 
+                append_trans(this->transactions, Transaction(order2.getId(), order.getId(), order2.getPrice())); 
                 return true; 
             } 
-        }
-        if (this->sells->tamanho == 0){
-            this->sells = inicializar(1);
         }
         append(this->sells, order);
         return false;
     } 
     if (this->sells->tamanho != 0){
-        value = this->sells->dados[0].getPrice();
-        id = this->sells->dados[0].getId();
+        order2 = this->sells->dados[0]; 
         for(int i = 1; i< this->sells->tamanho; i++){
-            cout << "for sells" << endl;
-            if (this->sells->dados[i].getPrice() < value){ 
-                value = this->sells->dados[i].getPrice();
-                id = this->sells->dados[i].getId();
+            if (this->sells->dados[i].getPrice() < order2.getPrice()){ 
+                order2 = this->sells->dados[i]; 
             }
         }
-        if (value <= order.getPrice()){
-            remove(this->sells, order); 
-            append_trans(this->transactions, Transaction(id, order.getId(), value)); 
+        if (order2.getPrice() <= order.getPrice()){
+            remove(this->sells, order2); 
+            append_trans(this->transactions, Transaction(order2.getId(), order.getId(), order2.getPrice())); 
             return true; 
         }
     }
-    if (this->buys->tamanho == 0){
-            this->sells = inicializar(1);
-        }
     append(this->buys, order);
     return false; 
 }
