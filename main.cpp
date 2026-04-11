@@ -12,46 +12,53 @@ int main(){
     skoob.printTransactions();
 
     float valor = 10; 
-
-    // testes do valor 
-    Order pedido(2,'S',valor,1);
-    Order pedido2(1,'B',valor-1,0);
-    Order pedido3(5,'B',valor+1,12);
-    Order pedidu(15,'B',valor,1);
-    Order venda(3,'S', valor-2, 3);
-    Order venda1(6,'S', valor-3, 13);
-    Order vendas1(16,'S', valor+10, 5);
-    Order vendas2(16,'S', valor+10, 6);
-    Order compra(11,'B', valor + 11, 1); 
+    
+    cout << endl;
+    cout << "Teste de timestamp" << endl; 
+    Order venda1(1,'S',valor, 11);
+    Order pedido(2, 'B', valor, 10); 
+    Order pedido1(4,'B', valor, 12);
 
     skoob.submit(pedido);
-    skoob.submit(pedido2);
-    skoob.submit(venda);
-
-    skoob.printSellOrders();
-    skoob.printBuyOrders(); 
-    skoob.printTransactions();
-
-    skoob.submit(pedido3); 
+    skoob.submit(pedido1);
     skoob.submit(venda1);
-    skoob.cancel(6); 
-    
-    skoob.submit(pedidu); 
-    skoob.submit(vendas1); 
-    skoob.submit(vendas2);
 
+    skoob.printBuyOrders(); 
+    skoob.printSellOrders(); 
+    skoob.printTransactions(); 
 
+    cout << endl;
+    cout << "Teste de valor" << endl; 
+    Order venda2(3,'S',valor+1, 20);
+    Order pedido2(4, 'B', valor+15, 21); 
+    Order pedido3(5,'B', valor-2, 22);
 
-    int b; 
-    skoob.getBuyOrders(&b); 
-    cout << b << endl;
+    skoob.submit(venda2);
+    skoob.submit(pedido2);
+    skoob.submit(pedido3);
+
+    skoob.printBuyOrders(); 
+    skoob.printSellOrders(); 
+    skoob.printTransactions(); 
+
+    cout << endl;
+    cout << "Teste de cancelar" << endl; 
+    Order venda7(6,'S',valor+10, 20);
+    skoob.submit(venda7);
+    skoob.printSellOrders(); 
+    skoob.cancel(6);
+    skoob.printSellOrders();
 
     int a; 
-    skoob.getTransactions(&a); 
+    skoob.getBuyOrders(&a); 
     cout << a << endl;
 
+    int b; 
+    skoob.getSellOrders(&b); 
+    cout << b << endl;
+
     int c; 
-    skoob.getSellOrders(&c); 
+    skoob.getTransactions(&c); 
     cout << c << endl;
 
     return 0;
