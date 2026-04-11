@@ -121,7 +121,7 @@ bool OrderBook::submit(Order order){
     int id = 0;     
     if(type == 'S'){ // se for do tipo sell 
 
-        if (this->buys->tamanho != 0){ //se ele tá vazio ele tbm é diferente de zero, pq preencheu com lixo 
+        if (this->buys->tamanho != 0){ 
             value = this->buys->dados[0].getPrice();
             id = this->buys->dados[0].getId();
 
