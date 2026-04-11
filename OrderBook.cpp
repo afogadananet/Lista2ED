@@ -137,6 +137,9 @@ bool OrderBook::submit(Order order){
                 return true; 
             } 
         }
+        if (this->sells->tamanho == 0){
+            this->sells = inicializar(1);
+        }
         append(this->sells, order);
         return false;
     } 
@@ -156,6 +159,9 @@ bool OrderBook::submit(Order order){
             return true; 
         }
     }
+    if (this->buys->tamanho == 0){
+            this->sells = inicializar(1);
+        }
     append(this->buys, order);
     return false; 
 }

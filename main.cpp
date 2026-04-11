@@ -19,25 +19,15 @@ int main(){
     Order pedido1(40,'B', valor, 14);
 
     skoob.submit(pedido);
-    skoob.submit(pedido1);
-    skoob.printBuyOrders(); 
     skoob.submit(venda1);
-
-    skoob.printSellOrders();
-    skoob.printBuyOrders(); 
-    skoob.printTransactions();
-
+    skoob.cancel(6); 
 
     int b; 
-    skoob.getBuyOrders(&b); 
+    skoob.getSellOrders(&b); 
     cout << b << endl;
 
-    int a; 
-    skoob.getTransactions(&a); 
-    cout << a << endl;
-
     int c; 
-    skoob.getSellOrders(&c); 
+    skoob.getTransactions(&c); 
     cout << c << endl;
 
     return 0;
