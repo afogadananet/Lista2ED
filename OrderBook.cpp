@@ -127,11 +127,11 @@ bool OrderBook::submit(Order order){
                 if (this->buys->dados[i].getPrice() > order2.getPrice()){
                     order2 = this->buys->dados[i];          
                 }
-                if (this->buys->dados[i].getPrice() == order2.getPrice()){
+                else {if (this->buys->dados[i].getPrice() == order2.getPrice()){
                     if (this->buys->dados[i].getTimestamp() < order2.getTimestamp()){
                         order2 = this->buys->dados[i];     
                     }     
-                }
+                }}
             }
             if (order2.getPrice() >= order.getPrice()){
                 remove(this->buys, order2); 
@@ -148,11 +148,11 @@ bool OrderBook::submit(Order order){
             if (this->sells->dados[i].getPrice() < order2.getPrice()){ 
                 order2 = this->sells->dados[i]; 
             }
-            if (this->sells->dados[i].getPrice() == order2.getPrice()){
+            else{if (this->sells->dados[i].getPrice() == order2.getPrice()){
                     if (this->sells->dados[i].getTimestamp() < order2.getTimestamp()){
                         order2 = this->sells->dados[i];     
                 }     
-            }
+            }}
         }
         if (order2.getPrice() <= order.getPrice()){
             remove(this->sells, order2); 
