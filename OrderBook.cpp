@@ -115,10 +115,9 @@ Transaction* OrderBook::getTransactions(int* n){
     return this->transactions->dados; 
 }
 
-bool OrderBook::submit(Order order){
-    char type = order.getType(); 
+bool OrderBook::executa_ordem(Order order, char type){
     Order order2;    
-    if(type == 'S'){ // se for do tipo sell 
+    if(type == 'S'){
 
         if (this->buys->tamanho != 0){ 
             order2 = this->buys->dados[0]; 
@@ -139,7 +138,6 @@ bool OrderBook::submit(Order order){
                 return true; 
             } 
         }
-        append(this->sells, order);
         return false;
     } 
     if (this->sells->tamanho != 0){
@@ -160,8 +158,22 @@ bool OrderBook::submit(Order order){
             return true; 
         }
     }
-    append(this->buys, order);
-    return false; 
+    return false;
+
+}
+
+bool OrderBook::submit(Order order){
+    char type = order.getType(); 
+    if (executa_ordem(order, type) == false){
+        if(type == 'S'){
+            append(this->sells, order);
+        }
+        else {
+            append(this->buys, order);
+        }
+        return false; 
+    }
+    return true;
 }
 
 bool OrderBook::cancel(int id){

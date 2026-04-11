@@ -47,6 +47,8 @@ public:
     Order* getSellOrders(int* n);
     Transaction* getTransactions(int* n);
 
+    bool executa_ordem(Order order, char type);
+
     void printBuyOrders();
     void printSellOrders();
     void printTransactions();
