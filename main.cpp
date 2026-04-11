@@ -15,8 +15,8 @@ int main(){
     
     // testes do valor 
     Order venda1(1,'S',valor, 11);
-    Order pedido(2, 'B', valor, 10); 
-    Order pedido1(4,'B', valor, 12);
+    Order pedido1(2, 'B', valor, 10); 
+    Order pedido(4,'B', valor, 12);
 
     skoob.submit(pedido);
     skoob.submit(pedido1);
