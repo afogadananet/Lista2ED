@@ -14,13 +14,21 @@ int main(){
     float valor = 10; 
     
     // testes do valor 
-    Order venda1(10,'S',valor, 11);
-    Order pedido(20, 'B', valor, 12); 
-    Order pedido1(40,'B', valor, 14);
+    Order venda1(1,'S',valor, 11);
+    Order pedido(2, 'B', valor, 10); 
+    Order pedido1(4,'B', valor, 12);
 
     skoob.submit(pedido);
+    skoob.submit(pedido1);
     skoob.submit(venda1);
-    skoob.cancel(6); 
+
+    skoob.printBuyOrders(); 
+    skoob.printSellOrders(); 
+    skoob.printTransactions(); 
+
+    int a; 
+    skoob.getBuyOrders(&a); 
+    cout << a << endl;
 
     int b; 
     skoob.getSellOrders(&b); 
